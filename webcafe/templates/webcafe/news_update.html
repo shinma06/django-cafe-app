@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}WCB Cafe - EDIT NEWS{% endblock title %}
+
+{% block id %}accounts{% endblock id %}
+
+{% block page %}Edit News{% endblock page %}
+
+{% block paragraph %}
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            {% csrf_token %}
+            {{ form.as_p }}
+        </div>
+        <input type="submit" class="button" value="完了">
+    </form>
+{% endblock paragraph %}

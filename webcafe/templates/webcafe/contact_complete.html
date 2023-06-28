@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}WCB Cafe - CONTACT{% endblock title %}
+
+{% block id %}home{% endblock id %}
+
+{% block wrapper %}home-content{% endblock wrapper %}
+
+{% block page %}COMPLETE{% endblock page %}
+
+{% block paragraph %}
+<p>お問い合わせが送信されました。</p>
+<a class="button" href="{% url 'index' %}">ホームへ戻る</a>
+{% endblock paragraph %}

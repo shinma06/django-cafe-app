@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}WCB Cafe{% endblock title %}
+
+{% block id %}home{% endblock id %}
+
+{% block wrapper %}home-content{% endblock wrapper %}
+
+{% block page %}We'll Make Your Day{% endblock page %}
+
+{% block paragraph %}
+<p>おしゃれなカフェで癒やされてみませんか？無添加の食材で体の中からリフレッシュ。</p>
+<a class="button" href="{% url 'menu' %}">メニューを見る</a>
+{% endblock paragraph %}
