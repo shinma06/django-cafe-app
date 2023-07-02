@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'webcafe.apps.WebcafeConfig',
+    # 'webcafe.apps.WebcafeConfig',
+    'pages.apps.PagesConfig',
     'accounts.apps.AccountsConfig',
 ]
 
