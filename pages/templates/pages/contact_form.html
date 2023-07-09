@@ -7,7 +7,7 @@
 {% block page %}Contact{% endblock page %}
 
 {% block paragraph %}
-<form action="{% url 'contact_form' %}" method="post">
+<form action="{% url 'pages:contact_form' %}" method="post">
     {% csrf_token %}
     <table>
         {{ form.as_p }}

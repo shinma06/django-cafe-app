@@ -16,15 +16,15 @@
     <div id="{% block id %}{% endblock id %}" class="big-bg"><!-- id -->
         <header class="page-header wrapper">
             <h1>
-                <a href="{% url 'index' %}">
+                <a href="{% url 'pages:index' %}">
                     <img class="logo" src="{% static 'pages/images/logo.svg' %}" alt="WCBカフェ ホーム">
                 </a>
             </h1>
             <nav>
                 <ul class="main-nav">
-                    <li><a href="{% url 'news' %}">News</a></li>
-                    <li><a href="{% url 'menu' %}">Menu</a></li>
-                    <li><a href="{% url 'contact_form' %}">Contact</a></li>
+                    <li><a href="{% url 'pages:news' %}">News</a></li>
+                    <li><a href="{% url 'pages:menu' %}">Menu</a></li>
+                    <li><a href="{% url 'pages:contact_form' %}">Contact</a></li>
                     {% if request.user.is_authenticated %}
                         <li><a href="#">Accounts</a></li>
                         <li><a href="{% url 'accounts:logout' %}">Logout</a></li>

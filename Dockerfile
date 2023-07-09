@@ -8,5 +8,5 @@ WORKDIR /code
 
 COPY . /code
 
-RUN pip install --upgrade pip
-RUN pip install django mysqlclient pillow
+RUN pip install --upgrade pip && \
+    pip install django mysqlclient pillow

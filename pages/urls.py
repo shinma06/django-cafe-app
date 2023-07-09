@@ -2,6 +2,8 @@ from django.urls import path
 
 from . import views
 
+app_name = 'pages'
+
 urlpatterns = [
     path('', views.index_view, name='index'),
     path('pages/news/', views.NewsView.as_view(), name='news'),
@@ -12,5 +14,4 @@ urlpatterns = [
     path('pages/menu/<int:pk>/update/', views.UpdateMenuView.as_view(), name='menu-update'),
     path('pages/contact/', views.contact_form, name='contact_form'),
     path('pages/contact/complete/', views.contact_complete, name='contact_complete'),
-    # path('pages/accounts/', name='accounts_edit'),
 ]
