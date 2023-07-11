@@ -12,13 +12,14 @@
         {% for item in object_list %}
             <header class="post-info">
                 <h2 class="post-title">{{ item.title }}</h2>
-                <p class="post-date">{{ item.created_date|date:"m" }}/{{ item.created_date|date:"d" }}<span>{{ item.created_date|date:"Y" }}</span></p>
-                <p class="post-cat">カテゴリー：{{ item.category }}</p>
+                <p class="post-date">{{ item.created_at|date:"m" }}/{{ item.created_at|date:"d" }}<span>{{ item.created_at|date:"Y" }}</span></p>
+                <p class="post-cat">カテゴリー：{{ item.get_category_display }}</p>
             </header>
-            <img src="{{ item.img.url }}" alt="{{ item.alt }}">
+            {% if item.img %}
+                <img src="{{ item.img.url }}" alt="{{ item.alt }}">
+            {% endif %}
             <p>{{ item.text }}</p>
         {% endfor %}
-        <!-- <p>体に優しい自然食を提供する、WCB CAFE。</p> -->
     </article>
 
     <aside>
@@ -36,9 +37,6 @@
             おいしいブレンドコーヒーとヘルシーなオーガニックフードで体の内側から癒やされてください。
         </p>
     </aside>
-    <!-- <div class="ad">
-        <img src="images/banner.jpg" alt="新メニュー登場">
-    </div> -->
 </div>
 {% endblock content %}
 

@@ -76,6 +76,11 @@ iframe {
     margin-top: 14px;
 }
 
+.page-header {
+    display: flex;
+    justify-content: space-between;
+}
+
 .main-nav {
     display: flex;
     font-size: 1.25rem;
@@ -88,6 +93,15 @@ iframe {
     margin-left: 36px;
 }
 
+.main-nav > li:hover {
+    -webkit-transition: all .5s;
+    transition: all .5s;
+}
+
+.main-nav > li.nav-single {
+    position: relative;
+}
+
 .main-nav a {
     color: #432;
 }
@@ -96,9 +110,54 @@ iframe {
     color: #0bd;
 }
 
-.page-header {
-    display: flex;
-    justify-content: space-between;
+/* floatクリア */
+.main-nav:before,
+.main-nav:after {
+    content: " ";
+    display: table;
+}
+
+.main-nav:after {
+    clear: both;
+}
+
+li.nav-single ul.nav-second {
+    position: absolute;
+    right: 7px;
+    top: 40px;
+    width: 100%;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+}
+
+li.nav-single:hover ul.nav-second {
+    top: 50px;
+    visibility: visible;
+    opacity: 1;
+}
+
+.nav-second li {
+    list-style:none;
+}
+
+ul.nav-second {
+    visibility: hidden;
+    opacity: 0;
+    z-index: 1;
+}
+
+/* 下矢印 */
+.init-bottom:after {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin: 0 0 0 15px;
+    border-right: 1px solid #0bd;
+    border-bottom: 1px solid #0bd;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
 }
 
 /* HOME */

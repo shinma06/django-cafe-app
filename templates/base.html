@@ -22,9 +22,23 @@
             </h1>
             <nav>
                 <ul class="main-nav">
-                    <li><a href="{% url 'pages:news' %}">News</a></li>
-                    <li><a href="{% url 'pages:menu' %}">Menu</a></li>
-                    <li><a href="{% url 'pages:contact_form' %}">Contact</a></li>
+                    <li class="nav-single">
+                        <a href="{% url 'pages:news' %}" class="init-bottom">News</a>
+                        <ul class="nav-second">
+                            <li><a href="{% url 'pages:news-create' %}">Create</a></li>
+                            <li><a href="#">Update</a></li>
+                            <li><a href="#">Delete</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-single">
+                        <a href="{% url 'pages:menu' %}" class="init-bottom">Menu</a>
+                        <ul class="nav-second">
+                            <li><a href="{% url 'pages:menu-create' %}">Create</a></li>
+                            <li><a href="#">Update</a></li>
+                            <li><a href="#">Delete</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Contact</a></li>
                     {% if request.user.is_authenticated %}
                         <li><a href="#">Accounts</a></li>
                         <li><a href="{% url 'accounts:logout' %}">Logout</a></li>

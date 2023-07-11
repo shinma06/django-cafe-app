@@ -1,15 +1,15 @@
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views import generic
 
 from .forms import SignupForm
 
-class SignupView(CreateView):
+class SignupView(generic.CreateView):
     model = User
     form_class = SignupForm
     template_name = 'accounts/signup.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('pages:index')
 
     # 自動ログイン
     def form_valid(self, form):

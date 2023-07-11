@@ -31,14 +31,14 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'pages.apps.PagesConfig',
+    'accounts.apps.AccountsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'pages.apps.PagesConfig',
-    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
@@ -82,9 +82,11 @@ DATABASES = {
         'USER': 'shinma',
         'PASSWORD': '0103',
         'HOST': 'mysql',
-        'PORT': '3306'
+        'PORT': '3306',
     }
 }
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -120,7 +122,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'
 
 MEDIA_URL = '/media/'
@@ -131,12 +133,5 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = 'index'
-LOGOUT_REDIRECT_URL = 'index'
-
-# # メールサーバー用
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_HOST_USER = 'shinma.0103.2006@gmail.com'
-# EMAIL_HOST_PASSWORD = '***REMOVED***'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
+LOGIN_REDIRECT_URL = 'pages:index'
+LOGOUT_REDIRECT_URL = 'pages:index'

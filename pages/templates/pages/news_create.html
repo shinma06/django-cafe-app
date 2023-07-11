@@ -7,11 +7,11 @@
 {% block page %}Create News{% endblock page %}
 
 {% block paragraph %}
-    <form method="post" enctype="multipart/form-data">
-        <div class="form-group">
-            {% csrf_token %}
-            {{ form.as_p }}
-        </div>
-        <input type="submit" class="button" value="投稿">
-    </form>
+<form method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        {% csrf_token %}
+        {{ form.as_p }}
+    </div>
+    <input type="submit" class="button" value="投稿">
+</form>
 {% endblock paragraph %}
