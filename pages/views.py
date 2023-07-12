@@ -12,6 +12,7 @@ class IndexView(generic.TemplateView):
 class NewsView(generic.ListView):
     template_name = 'pages/news.html'
     model = News
+    context_object_name = 'object_list'
 
 # ニュース作成
 class CreateNewsView(generic.CreateView):
@@ -29,6 +30,7 @@ class UpdateNewsView(generic.UpdateView):
 class MenuView(generic.ListView):
     template_name = 'pages/menu.html'
     model = Menu 
+    context_object_name = 'object_list'
 
 # メニュー作成
 class CreateMenuView(generic.CreateView):

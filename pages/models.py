@@ -3,8 +3,6 @@ from django.utils import timezone
 
 # Create your models here.
 
-
-
 class News(models.Model):
     CATEGORY = (
         ('promotion', 'お店の紹介'),

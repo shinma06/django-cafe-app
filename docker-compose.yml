@@ -1,13 +1,13 @@
+version: '3'
 services:
   mysql:
     image: mysql:8.0.33
     container_name: mysql
     environment:
-      - MYSQL_LOWER_CASE_TABLE_NAMES=1
       - MYSQL_DATABASE=cafeapp
       - MYSQL_USER=shinma
       - MYSQL_PASSWORD=0103
-      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_ROOT_PASSWORD=0103
     
     volumes:
     - ./data:/var/lib/mysql
@@ -17,7 +17,7 @@ services:
 
   web:
     build: .
-    command: python3 manage.py runserver 0.0.0.0:8000
+    command: sh -c "sleep 10 && python3 manage.py runserver 0.0.0.0:8000" #mysqlコンテナの起動を待つためコマンドを10秒遅延
     volumes:
       - .:/code
     ports:
