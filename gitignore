@@ -1,9 +1,0 @@
-.DS_Store
-
-/data/
-
-/media/*
-
-**/migrations/
-
-__pycache__/
