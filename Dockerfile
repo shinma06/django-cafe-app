@@ -2,11 +2,9 @@ FROM python:3.11.4
 
 RUN apt-get update
 
-RUN mkdir /code
+RUN mkdir /cafeapp
 
-WORKDIR /code
-
-COPY . /code
+WORKDIR /cafeapp
 
 RUN pip install --upgrade pip && \
     pip install django mysqlclient pillow

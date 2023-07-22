@@ -30,6 +30,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'cafeapp',
     'pages.apps.PagesConfig',
     'accounts.apps.AccountsConfig',
     'django.contrib.admin',
