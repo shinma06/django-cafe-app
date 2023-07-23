@@ -7,9 +7,9 @@ class Command(BaseCommand):
     help = 'Custom command to run makemigrations for all apps and then runserver'
 
     def handle(self, *args, **options):
-        # Get all installed apps excluding default ones
+        # Get all installed apps excluding default ones and cafeapp
         installed_apps = apps.get_app_configs()
-        non_default_apps = [app for app in installed_apps if not app.name.startswith('django.contrib.')]
+        non_default_apps = [app for app in installed_apps if not app.name.startswith('django.contrib.') and app.name != 'cafeapp']
 
         # Run makemigrations for each app
         for app in non_default_apps:
