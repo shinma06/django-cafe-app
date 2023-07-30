@@ -12,6 +12,6 @@ urlpatterns = [
     path('menu/create/', views.CreateMenuView.as_view(), name='menu-create'),
     path('news/<int:pk>/update/', views.UpdateNewsView.as_view(), name='news-update'),
     path('menu/<int:pk>/update/', views.UpdateMenuView.as_view(), name='menu-update'),
-    # path('contact/', name='contact-form'),
-    # path('contact/complete/', name='contact-complete'),
+    path('contact/', views.ContactView.as_view(), name='contact'),
+    path('contact_complete/', views.ContactCompleteView.as_view(), name='contact_complete'),
 ]

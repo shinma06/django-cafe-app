@@ -7,13 +7,11 @@
 {% block page %}Contact{% endblock page %}
 
 {% block paragraph %}
-<form action="{% url 'pages:contact_form' %}" method="post">
-    {% csrf_token %}
-    <table>
+    <form method="post">
+        {% csrf_token %}
         {{ form.as_p }}
-    </table>
-    <input type="submit" class="button" value="送信">
-</form>
+        <button type="submit" class="button">送信</button>
+    </form>
 {% endblock paragraph %}
 
 {% block content %}

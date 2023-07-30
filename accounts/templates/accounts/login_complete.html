@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}WCB Cafe - Logout{% endblock title %}
+
+{% block id %}home{% endblock id %}
+
+{% block wrapper %}home-content{% endblock wrapper %}
+
+{% block page %}LOGUOT COMPLETE{% endblock page %}
+
+{% block paragraph %}
+    <p>正常にログインしました。</p>
+    <a class="button" href="{% url 'pages:index' %}">ホームへ戻る</a>
+{% endblock paragraph %}

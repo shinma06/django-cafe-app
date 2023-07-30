@@ -128,5 +128,11 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = 'pages:index'
-LOGOUT_REDIRECT_URL = 'pages:index'
+LOGOUT_REDIRECT_URL = 'accounts:logout_complete'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = '###'  # SMTPサーバーのアドレス
+EMAIL_PORT = 587  # ポート番号
+EMAIL_USE_TLS = True  # TLSを使用するかどうか
+EMAIL_HOST_USER = '###'  # 送信元のメールアドレス（SMTPサーバーのユーザー名）
+EMAIL_HOST_PASSWORD = '###'  # SMTPサーバーのパスワード

@@ -1,7 +1,10 @@
 from django.urls import reverse_lazy
 from django.views import generic
-from .models import News ,Menu
-from .forms import NewsForm
+from .models import News, Menu
+from .forms import NewsForm, ContactForm
+from django.shortcuts import render, redirect
+from django.core.mail import send_mail
+from django.conf import settings
 
 # ホーム
 
@@ -46,30 +49,32 @@ class UpdateMenuView(generic.UpdateView):
     template_name = 'pages/menu_update.html'
     success_url = reverse_lazy('pages:menu')
 
-# # コンタクト
-# def contact_form(request):
+# コンタクト
+class ContactView(generic.View):
+    def get(self, request):
+        form = ContactForm()
+        return render(request, 'pages/contact.html', {'form': form})
 
-#     if request.method == 'POST':
-#         form = ContactForm(request.POST)
+    def post(self, request):
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            subject = form.cleaned_data['subject']
+            message = form.cleaned_data['message']
+            full_name = form.cleaned_data['full_name']
+            email = form.cleaned_data['email']
 
-#         if form.is_valid():
-#             subject = form.cleaned_data['subject']
-#             message = form.cleaned_data['message']
-#             sender = form.cleaned_data['sender']
-#             recipients = [settings.EMAIL_HOST_USER]
+            # メールの送信
+            send_mail(
+                f'件名: {subject}',
+                f'本文: {message}\n\nフルネーム: {full_name}\nEmailアドレス: {email}',
+                settings.EMAIL_HOST_USER,  # 送信元のメールアドレス
+                ['###'],  # 送信先のメールアドレス（リストで複数指定可能）
+                fail_silently=False,
+            )
 
-#             try:
-#                 send_mail(subject, message, sender, recipients)
-#             except BadHeaderError:
-#                 return HttpResponse('無効なヘッダーが見つかりました。')
-#             return redirect('contact_complete')
+            return redirect('contact-complete')  # 送信成功時に/contact_complete/へリダイレクト
+        return render(request, 'pages/contact.html', {'form': form})
 
-#     else:
-#         form = ContactForm()
-
-#     return render(request, 'pages/contact_form.html', {'form': form})
-
-# # コンタクト送信完了
-
-# class ContactComplateView(generic.TemplateView):
-#     template_name = 'pages/contact_complete.html'
+# コンタクト送信完了
+class ContactCompleteView(generic.TemplateView):
+    template_name = 'pages/contact_complete.html'

@@ -21,3 +21,11 @@ class NewsForm(forms.ModelForm):
             raise forms.ValidationError('画像が指定されていない場合は画像タイトルを指定することはできません。')
 
         return cleaned_data
+    
+from django import forms
+
+class ContactForm(forms.Form):
+    subject = forms.CharField(label='件名', max_length=100)
+    message = forms.CharField(label='本文', widget=forms.Textarea)
+    full_name = forms.CharField(label='フルネーム', max_length=100)
+    email = forms.EmailField(label='Emailアドレス', max_length=100)

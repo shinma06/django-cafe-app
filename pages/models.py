@@ -9,7 +9,7 @@ class News(models.Model):
         ('irregularmenu', '期間限定メニュー'),
         ('event', 'イベント'),
         ('talk', 'お客様との会話'),
-        )
+    )
     category = models.CharField(null=False, max_length=100, choices=CATEGORY, verbose_name='カテゴリー',)
     title = models.CharField(null=False, max_length=100, verbose_name='タイトル',)
     text = models.TextField(null=False, verbose_name='本文',)
