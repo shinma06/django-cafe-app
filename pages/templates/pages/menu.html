@@ -17,13 +17,23 @@
 {% block content %}
 <div class="wrapper grid">
     <div class="item big-box">
-        <img src="{% static 'pages/images/coffee.jpg' %}" alt="こだわりのコーヒー">
-        <p>こだわりコーヒー</p>
+        <a href="#">
+            <img src="{% static 'pages/images/coffee.jpg' %}" alt="こだわりのコーヒー">
+        </a>
+        <div class="menu">
+            <a href="#"><h2>こだわりコーヒー</h2></a>
+            <h3>680円</h3>
+        </div>
     </div>
     {% for item in object_list %}
     <div class="item">
+        <a href="#">
             <img src="{{ item.img.url }}" alt="{{ item.alt }}"/>
-        <p>{{ item.title }}</p>
+        </a>
+        <div class="menu">
+            <a href="#"><h2>{{ item.title }}</h2></a>
+            <h3>{{ item.price }}</h3>
+        </div>
     </div>
     {% endfor %}
 </div>
