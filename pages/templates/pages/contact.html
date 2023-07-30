@@ -7,13 +7,15 @@
 {% block page %}Contact{% endblock page %}
 
 {% block paragraph %}
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            {% csrf_token %}
+            {{ form.as_p }}
+        </div>
         <button type="submit" class="button">送信</button>
     </form>
+</div>
 {% endblock paragraph %}
-
 {% block content %}
 <section id="location">
     <div class="wrapper">
