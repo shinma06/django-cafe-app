@@ -1,5 +1,5 @@
 from django import forms
-from .models import News
+from .models import News, Menu
 
 class NewsForm(forms.ModelForm):
     class Meta:
@@ -8,9 +8,6 @@ class NewsForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        title = cleaned_data.get('title')
-        text = cleaned_data.get('text')
-        category = cleaned_data.get('category')
         img = cleaned_data.get('img')
         alt = cleaned_data.get('alt')
 
@@ -21,8 +18,11 @@ class NewsForm(forms.ModelForm):
             raise forms.ValidationError('画像が指定されていない場合は画像タイトルを指定することはできません。')
 
         return cleaned_data
-    
-from django import forms
+
+class MenuForm(forms.ModelForm):
+    class Meta:
+        model = Menu
+        fields = ['title', 'img', 'alt', 'price']
 
 class ContactForm(forms.Form):
     subject = forms.CharField(label='件名', max_length=100)

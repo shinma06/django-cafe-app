@@ -73,3 +73,16 @@ class LoginForm(forms.Form):
                 raise forms.ValidationError('ユーザー名かパスワードが間違っています。')
 
         return cleaned_data
+    
+class RenameForm(forms.Form):
+    username = forms.CharField(label='新しいユーザー名:', max_length=18)
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if not re.match(r'^[a-zA-Z0-9]+$', username):
+            raise ValidationError('ユーザー名は半角英数字のみ有効です。')
+
+        if User.objects.filter(username=username).exists():
+            raise ValidationError('このユーザー名は既に使用されています。別のユーザー名を選択してください。')
+
+        return username

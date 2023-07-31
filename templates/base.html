@@ -24,19 +24,6 @@
                 <ul class="main-nav">
                     <li class="nav-single">
                         {% if user.is_authenticated and user.is_superuser %}
-                            <a href="{% url 'pages:news' %}" class="init-bottom">News</a>
-                        {% else %}
-                            <a href="{% url 'pages:news' %}">News</a>
-                        {% endif %}
-                        {% if user.is_superuser %}
-                            <ul class="nav-second">
-                                <li><a href="{% url 'pages:news-create' %}">Create</a></li>
-                                <li><a href="/admin/pages/news/" target="_blank">Edit</a></li>
-                            </ul>
-                        {% endif %}
-                    </li>
-                    <li class="nav-single">
-                        {% if user.is_authenticated and user.is_superuser %}
                             <a href="{% url 'pages:menu' %}" class="init-bottom">Menu</a>
                         {% else %}
                             <a href="{% url 'pages:menu' %}">Menu</a>
@@ -48,13 +35,24 @@
                             </ul>
                         {% endif %}
                     </li>
+                    <li class="nav-single">
+                        {% if user.is_authenticated and user.is_superuser %}
+                            <a href="{% url 'pages:news' %}" class="init-bottom">News</a>
+                        {% else %}
+                            <a href="{% url 'pages:news' %}">News</a>
+                        {% endif %}
+                        {% if user.is_superuser %}
+                            <ul class="nav-second">
+                                <li><a href="{% url 'pages:news-create' %}">Create</a></li>
+                                <li><a href="/admin/pages/news/" target="_blank">Edit</a></li>
+                            </ul>
+                        {% endif %}
+                    </li>
                     <li><a href="{% url 'pages:contact' %}">Contact</a></li>
                     {% if request.user.is_authenticated %}
-                        <li><a href="accounts">Accounts</a></li>
-                        <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
+                        <li><a href="{% url 'accounts:account' %}">Accounts</a></li>
                     {% else %}
                         <li><a href="{% url 'accounts:login' %}">Login</a></li>
-                        <li><a href="{% url 'accounts:signup' %}">Signup</a></li>
                     {% endif %}
                 </ul>
             </nav>

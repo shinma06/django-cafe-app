@@ -1,33 +1,20 @@
-from django.urls import reverse_lazy
 from django.views import generic
 from .models import News, Menu
-from .forms import NewsForm, ContactForm
+from .forms import NewsForm, MenuForm, ContactForm
+from django.http import Http404
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
+from django.contrib.auth.decorators import user_passes_test
+from django.utils.decorators import method_decorator
+from django.urls import reverse_lazy
 from django.conf import settings
 
-# ホーム
+def is_superuser(user):
+    return user.is_superuser
 
+# ホーム
 class IndexView(generic.TemplateView):
     template_name = 'pages/index.html'
-
-# ニュース
-class NewsView(generic.ListView):
-    template_name = 'pages/news.html'
-    model = News
-    context_object_name = 'object_list'
-
-# ニュース作成
-class CreateNewsView(generic.CreateView):
-    template_name = 'pages/news_create.html'
-    form_class = NewsForm
-    success_url = reverse_lazy('pages:news')
-
-# ニュース更新
-class UpdateNewsView(generic.UpdateView):
-    model = News
-    template_name = 'pages/news_update.html'
-    success_url = reverse_lazy('pages:news')
 
 # メニュー
 class MenuView(generic.ListView):
@@ -36,18 +23,24 @@ class MenuView(generic.ListView):
     context_object_name = 'object_list'
 
 # メニュー作成
+@method_decorator(user_passes_test(is_superuser, login_url='pages:menu'), name='dispatch')
 class CreateMenuView(generic.CreateView):
     template_name = 'pages/menu_create.html'
-    model = Menu
-    fields = {'title', 'img', 'alt'}
+    form_class = MenuForm
     success_url = reverse_lazy('pages:menu')
 
+# ニュース
+class NewsView(generic.ListView):
+    template_name = 'pages/news.html'
+    model = News
+    context_object_name = 'object_list'
 
-# メニュー更新
-class UpdateMenuView(generic.UpdateView):
-    model = Menu
-    template_name = 'pages/menu_update.html'
-    success_url = reverse_lazy('pages:menu')
+# ニュース作成
+@method_decorator(user_passes_test(is_superuser, login_url='pages:news'), name='dispatch')
+class CreateNewsView(generic.CreateView):
+    template_name = 'pages/news_create.html'
+    form_class = NewsForm
+    success_url = reverse_lazy('pages:news')
 
 # コンタクト
 class ContactView(generic.View):
@@ -75,6 +68,11 @@ class ContactView(generic.View):
             return redirect('contact-complete')  # 送信成功時に/contact_complete/へリダイレクト
         return render(request, 'pages/contact.html', {'form': form})
 
-# コンタクト送信完了
+# コンタクト送信成功
 class ContactCompleteView(generic.TemplateView):
     template_name = 'pages/contact_complete.html'
+
+    def dispatch(self, *args, **kwargs):
+        if not self.request.META.get('HTTP_REFERER'):
+            raise Http404("Page not found")
+        return super().dispatch(*args, **kwargs)

@@ -24,9 +24,10 @@ class News(models.Model):
         return self.title
 
 class Menu(models.Model):
-    title = models.CharField(null=False, max_length=100, verbose_name='メニュー名',)
+    title = models.CharField(null=False, max_length=50, verbose_name='メニュー名',)
     img = models.ImageField(null=False, verbose_name='メニュー画像',)
-    alt = models.CharField(null=False, max_length=100, verbose_name='画像タイトル',)
+    alt = models.CharField(null=False, max_length=50, verbose_name='画像タイトル',)
+    price = models.IntegerField(null=False, verbose_name='値段(円)')
     
     def __str__(self):
         return self.title
