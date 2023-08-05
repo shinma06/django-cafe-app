@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}WCB Cafe - NEWS POSTED{% endblock title %}
+
+{% block id %}accounts{% endblock id %}
+
+{% block wrapper %}home-content{% endblock wrapper %}
+
+{% block page %}NEWS POSTED{% endblock page %}
+
+{% block paragraph %}
+    <p>新規ニュースを投稿しました。<br><strong>タイトル：{{ news.title }}</strong></p>
+    <a class="button" href="{% url 'pages:news' %}">ニュース一覧</a>
+{% endblock paragraph %}

@@ -1,8 +1,6 @@
 from django.db import models
 from django.utils import timezone
 
-# Create your models here.
-
 class News(models.Model):
     CATEGORY = (
         ('promotion', 'お店の紹介'),
@@ -15,7 +13,7 @@ class News(models.Model):
     text = models.TextField(null=False, verbose_name='本文',)
     img = models.ImageField(null=True, blank=True, verbose_name='画像',)
     alt = models.CharField(null=True, blank=True, max_length=100, verbose_name='画像タイトル',)
-    created_at = models.DateField(default=timezone.now,)
+    created_at = models.DateTimeField(default=timezone.now)
     
     class Meta:
         ordering = ['-created_at']

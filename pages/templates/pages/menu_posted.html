@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}WCB Cafe - MENU POSTED{% endblock title %}
+
+{% block id %}accounts{% endblock id %}
+
+{% block wrapper %}home-content{% endblock wrapper %}
+
+{% block page %}MENU POSTED{% endblock page %}
+
+{% block paragraph %}
+    <p>新規メニュー<strong>{{ menu.title }}</strong>を追加しました。</p>
+    <a class="button" href="{% url 'pages:menu' %}">メニュー一覧</a>
+{% endblock paragraph %}
+
