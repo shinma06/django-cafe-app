@@ -6,5 +6,6 @@ RUN mkdir /cafeapp
 
 WORKDIR /cafeapp
 
-RUN pip install --upgrade pip && \
-    pip install django mysqlclient pillow
+COPY requirements.txt ./
+
+RUN pip install --upgrade pip && pip install -r requirements.txt
