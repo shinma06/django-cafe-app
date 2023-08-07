@@ -10,6 +10,7 @@ urlpatterns = [
     path('menu/create/', views.CreateMenuView.as_view(), name='menu-create'),
     path('menu/posted/', views.PostedMenuView.as_view(), name='menu-posted'),
     path('news/', views.NewsView.as_view(), name='news'),
+    path('news/category/<str:category>/', views.NewsCategoryView.as_view(), name='news-category'),
     path('news/create/', views.CreateNewsView.as_view(), name='news-create'),
     path('news/posted/', views.PostedNewsView.as_view(), name='news-posted'),
     path('contact/', views.ContactView.as_view(), name='contact'),

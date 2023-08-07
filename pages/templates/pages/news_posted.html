@@ -9,6 +9,9 @@
 {% block page %}NEWS POSTED{% endblock page %}
 
 {% block paragraph %}
-    <p>新規ニュースを投稿しました。<br><strong>タイトル：{{ news.title }}</strong></p>
+    <p>
+        新規ニュースを投稿しました。<br>
+        <strong>タイトル：{{ posted_news.title }}</strong>
+    </p>
     <a class="button" href="{% url 'pages:news' %}">ニュース一覧</a>
 {% endblock paragraph %}

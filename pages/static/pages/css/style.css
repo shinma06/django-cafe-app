@@ -212,8 +212,9 @@ ul.nav-second {
 /* 記事部分 */
 
 article {
-    /* order: 2; */
     width: 74%;
+    display: flex;
+    flex-direction: column;
 }
 
 .post-info {
@@ -262,10 +263,56 @@ article p {
     margin-bottom: 1rem;
 }
 
+/* ページネーション */
+.Pagination {
+    display: flex;
+    align-items: center;
+    list-style: none;
+}
+
+ul.Pagination {
+    align-self: center;
+}
+
+.Pagination-Item-Link {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    overflow: hidden;
+    background: #fff;
+    border: solid 2px #0bd;
+    font-size: 14px;
+    color: #0bd;
+    font-weight: bold;
+    transition: all 0.15s linear;
+}
+
+.Pagination-Item-Link-Icon {
+    width: 20px;
+}
+
+.Pagination-Item-Link.isActive {
+    background: #0bd;
+    color: #fff;
+    pointer-events: none;
+}
+
+.Pagination-Item-Link:not(.isActive):hover {
+    background: #0bd;
+    color: #fff;
+}
+
+.Pagination > * + * {
+    margin-left: 8px;
+}
+
 /* サイドバー */
 
 aside {
-    /* order: 3; */
     width: 22%;
 }
 
@@ -291,10 +338,6 @@ aside {
 aside p {
     padding: 12px 10px;
 }
-
-/* .ad {
-    order: 1;
-} */
 
 /* メニュー */
 #menu {

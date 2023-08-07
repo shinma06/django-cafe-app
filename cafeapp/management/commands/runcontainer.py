@@ -4,22 +4,18 @@ from django.apps import apps
 
 
 class Command(BaseCommand):
-    help = 'Custom command to run makemigrations for all apps and then runserver'
+    help = 'Custom command to run makemigrations and migrate individually for all apps and then runserver'
 
     def handle(self, *args, **options):
-        # Get all installed apps excluding default ones and cafeapp
         installed_apps = apps.get_app_configs()
         non_default_apps = [app for app in installed_apps if not app.name.startswith('django.contrib.') and app.name != 'cafeapp']
 
-        # Run makemigrations for each app
         for app in non_default_apps:
             self.stdout.write(self.style.SUCCESS(f"Making migrations for {app.label}"))
             call_command('makemigrations', app.label, interactive=False)
 
-        # Run migrate for all apps
         self.stdout.write(self.style.SUCCESS("Running migrate"))
         call_command('migrate')
 
-        # Run runserver
         self.stdout.write(self.style.SUCCESS("Starting server"))
         call_command('runserver', '0.0.0.0:8000')

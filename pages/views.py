@@ -22,28 +22,31 @@ class MenuView(generic.ListView):
     model = Menu 
     context_object_name = 'object_list'
 
-# メニュー追加
+# メニュー追加(superuserのみ使用可)
 @method_decorator(user_passes_test(is_superuser, login_url='pages:menu'), name='dispatch')
 class CreateMenuView(generic.CreateView):
     template_name = 'pages/menu_create.html'
     form_class = MenuForm
+    success_url = reverse_lazy('pages:menu-posted')
 
+    # 作成されたインスタンスのIDをセッションに保存
     def form_valid(self, form):
-        menu = form.save()
-        self.request.session['menu_id'] = menu.id
-        return redirect('pages:menu-posted')
+        response = super().form_valid(form)
+        self.request.session['menu_id'] = self.object.id
+        return response
 
 # メニュー追加完了
 class PostedMenuView(generic.TemplateView):
     template_name = 'pages/menu_posted.html'
 
+    # セッションからインスタンスのIDを取得し作成されたインスタンスを特定
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         menu_id = self.request.session.get('menu_id')
-        if menu_id is not None:
-            context['menu'] = Menu.objects.get(id=menu_id)
+        context['posted_menu'] = Menu.objects.get(id=menu_id)
         return context
 
+    #リダイレクト以外の方法でのアクセスを禁止
     def dispatch(self, *args, **kwargs):
         if not self.request.META.get('HTTP_REFERER'):
             raise Http404("Page not found")
@@ -55,28 +58,50 @@ class NewsView(generic.ListView):
     model = News
     context_object_name = 'object_list'
 
-# ニュース作成
+# ニュース絞り込み
+class NewsCategoryView(generic.ListView):
+    template_name = 'pages/news.html'
+    model = News
+    context_object_name = 'object_list'
+
+    def get_queryset(self):
+        category = self.kwargs['category']
+        valid_categories = [cat[0] for cat in News.CATEGORY]
+        if category not in valid_categories:
+            raise Http404("Category does not exist")
+        self.category_name = dict(News.CATEGORY).get(category)
+        return News.objects.filter(category=category)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['category_name'] = self.category_name
+        return context
+
+# ニュース作成(superuserのみ使用可)
 @method_decorator(user_passes_test(is_superuser, login_url='pages:news'), name='dispatch')
 class CreateNewsView(generic.CreateView):
     template_name = 'pages/news_create.html'
     form_class = NewsForm
+    success_url = reverse_lazy('pages:news-posted')
 
+    # 作成されたインスタンスのIDをセッションに保存
     def form_valid(self, form):
-        news = form.save()
-        self.request.session['news_id'] = news.id
-        return redirect('pages:news-posted')
+        response = super().form_valid(form)
+        self.request.session['news_id'] = self.object.id
+        return response
 
 # ニュース投稿完了
 class PostedNewsView(generic.TemplateView):
     template_name = 'pages/news_posted.html'
 
+    # セッションからインスタンスのIDを取得し作成されたインスタンスを特定
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        news_id = self.request.session.get('news_id')  # Get the ID of the news instance from session
-        if news_id is not None:
-            context['news'] = News.objects.get(id=news_id)  # Add the news instance to the context
+        news_id = self.request.session.get('news_id')
+        context['posted_news'] = Menu.objects.get(id=news_id)
         return context
     
+    #リダイレクト以外の方法でのアクセスを禁止
     def dispatch(self, *args, **kwargs):
         if not self.request.META.get('HTTP_REFERER'):
             raise Http404("Page not found")
@@ -105,13 +130,14 @@ class ContactView(generic.View):
                 fail_silently=False,
             )
 
-            return redirect('contact-complete')  # 送信成功時に/contact_complete/へリダイレクト
+            return redirect('contact-complete')
         return render(request, 'pages/contact.html', {'form': form})
 
 # コンタクト送信成功
 class ContactCompleteView(generic.TemplateView):
     template_name = 'pages/contact_complete.html'
 
+    #リダイレクト以外の方法でのアクセスを禁止
     def dispatch(self, *args, **kwargs):
         if not self.request.META.get('HTTP_REFERER'):
             raise Http404("Page not found")

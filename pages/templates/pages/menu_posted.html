@@ -9,7 +9,7 @@
 {% block page %}MENU POSTED{% endblock page %}
 
 {% block paragraph %}
-    <p>新規メニュー<strong>{{ menu.title }}</strong>を追加しました。</p>
+    <p>新規メニュー<strong>{{ posted_menu.title }}</strong>を追加しました。</p>
     <a class="button" href="{% url 'pages:menu' %}">メニュー一覧</a>
 {% endblock paragraph %}
 
