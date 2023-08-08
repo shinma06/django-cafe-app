@@ -52,14 +52,45 @@ class PostedMenuView(generic.TemplateView):
             raise Http404("Page not found")
         return super().dispatch(*args, **kwargs)
 
+# ページネーションロジック
+class PaginationMixin:
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        current_page = context['page_obj'].number
+        total_pages = context['page_obj'].paginator.num_pages
+
+        # Don't display pagination if there are 10 or fewer items
+        if total_pages == 1:
+            context['show_pagination'] = False
+            return context
+
+        context['show_pagination'] = True
+
+        # Pagination Logic
+        if total_pages <= 5:
+            pages = range(1, total_pages + 1)
+        elif current_page <= 2:
+            pages = range(1, 6)
+        elif current_page >= total_pages - 1:
+            pages = range(total_pages - 4, total_pages + 1)
+        else:
+            pages = range(current_page - 2, current_page + 3)
+
+        context['pages'] = pages
+
+        return context
+
 # ニュース
-class NewsView(generic.ListView):
+class NewsView(PaginationMixin, generic.ListView):
     template_name = 'pages/news.html'
     model = News
     context_object_name = 'object_list'
 
 # ニュース絞り込み
-class NewsCategoryView(generic.ListView):
+class NewsCategoryView(PaginationMixin, generic.ListView):
     template_name = 'pages/news.html'
     model = News
     context_object_name = 'object_list'

@@ -8,6 +8,7 @@
 
 {% block content %}
 <div class="news-contents wrapper">
+    <!-- ニュース -->
     <article>
         {% if category_name %}
             <h2>絞り込み：{{ category_name }}</h2>
@@ -23,27 +24,9 @@
             {% endif %}
             <p>{{ item.text }}</p>
         {% endfor %}
-        <ul class="Pagination">
-            <li class="Pagination-Item">
-                <a class="Pagination-Item-Link" href="fiast page">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="Pagination-Item-Link-Icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
-                    </svg>
-                </a>
-            </li>
-            <li class="Pagination-Item">
-                <a class="Pagination-Item-Link" href="#"><span>1</span></a>
-            </li>
-            <li class="Pagination-Item">
-                <a class="Pagination-Item-Link" href="last page">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="Pagination-Item-Link-Icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
-                    </svg>
-                </a>
-            </li>
-        </ul>
     </article>
 
+    <!-- サイドバー -->
     <aside>
         <h3 class="sub-title">カテゴリー</h3>
         <ul class="sub-menu">
@@ -62,6 +45,41 @@
             おいしいブレンドコーヒーとヘルシーなオーガニックフードで体の内側から癒やされてください。
         </p>
     </aside>
+
+    <!-- ページネーション -->
+    <div class="Paginations">
+        {% if show_pagination %}   
+        <ul class="Pagination">
+            {% if page_obj.number != 1 %}
+                <li class="Pagination-Item">
+                    <a class="Pagination-Item-Link" href="?page=1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="Pagination-Item-Link-Icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+                        </svg>
+                    </a>
+                </li>
+            {% endif %}
+            <ul class="Pagination">
+                {% for page_num in pages %}
+                    <li class="Pagination-Item">
+                        <a class="Pagination-Item-Link {% if page_num == page_obj.number %}isActive{% endif %}" href="?page={{ page_num }}">
+                            <span>{{ page_num }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+            {% if page_obj.number != page_obj.paginator.num_pages %}
+                <li class="Pagination-Item">
+                    <a class="Pagination-Item-Link" href="?page={{ page_obj.paginator.num_pages }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="Pagination-Item-Link-Icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    {% endif %}
+    </div>
 </div>
 {% endblock content %}
 

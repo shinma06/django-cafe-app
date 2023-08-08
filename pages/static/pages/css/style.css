@@ -207,14 +207,15 @@ ul.nav-second {
     display: flex;
     justify-content: space-between;
     margin-bottom: 50px;
+    flex-wrap: wrap;
 }
 
 /* 記事部分 */
 
 article {
     width: 74%;
-    display: flex;
-    flex-direction: column;
+    /* display: flex;
+    flex-direction: column; */
 }
 
 .post-info {
@@ -264,6 +265,13 @@ article p {
 }
 
 /* ページネーション */
+
+.Paginations {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
 .Pagination {
     display: flex;
     align-items: center;
