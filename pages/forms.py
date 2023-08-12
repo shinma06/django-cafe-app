@@ -1,5 +1,7 @@
 from django import forms
-from .models import News, Menu
+from .models import News, Menu, Booking
+import jpholiday
+import datetime
 
 class NewsForm(forms.ModelForm):
     class Meta:
@@ -23,6 +25,16 @@ class MenuForm(forms.ModelForm):
     class Meta:
         model = Menu
         fields = ['title', 'img', 'alt', 'price']
+
+class BookingForm(forms.ModelForm):
+    date = forms.DateField(
+    label="日付",
+    widget=forms.TextInput(attrs={'id': 'datepicker'})
+    )
+
+    class Meta:
+        model = Booking
+        fields = ['name', 'date', 'time', 'phone_number', 'number_of_people']
 
 class ContactForm(forms.Form):
     subject = forms.CharField(label='件名', max_length=100)

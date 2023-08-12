@@ -29,3 +29,15 @@ class Menu(models.Model):
     
     def __str__(self):
         return self.title
+    
+class Booking(models.Model):
+    HOURS_CHOICES = [(f"{h}:{m}", f"{h}:{m}") for h in range(9, 22) for m in ["00", "30"] if not (h == 21 and m == "30")]
+
+    name = models.CharField("名前", max_length=30)
+    date = models.DateField("日付")
+    time = models.CharField("時間", max_length=5, choices=HOURS_CHOICES)
+    phone_number = models.CharField("電話番号", max_length=15)
+    number_of_people = models.PositiveIntegerField("人数", default=1)
+
+    def __str__(self):
+        return f"{self.name} - {self.date} {self.time}"

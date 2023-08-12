@@ -3,11 +3,11 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    {% block extra_head %}{% endblock %}
     <title>{% block title %}{% endblock title %}</title><!-- タイトル -->
     <meta name="description" content="ブレンドコーヒーとヘルシーなオーガニックフードを提供するカフェ">
     <link rel="icon" href="{% static 'pages/images/favicon.png' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Philosopher">
     <link rel="stylesheet" type="text/css" href="{% static 'pages/css/style.css' %}">
@@ -23,31 +23,33 @@
             <nav>
                 <ul class="main-nav">
                     <li class="nav-single">
-                        {% if user.is_authenticated and user.is_superuser %}
-                            <a href="{% url 'pages:menu' %}" class="init-bottom">Menu</a>
-                        {% else %}
-                            <a href="{% url 'pages:menu' %}">Menu</a>
-                        {% endif %}
                         {% if user.is_superuser %}
+                            <a href="{% url 'pages:menu' %}" class="init-bottom">Menu</a>
                             <ul class="nav-second">
                                 <li><a href="{% url 'pages:menu-create' %}">Create</a></li>
                                 <li><a href="/admin/pages/menu/" target="_blank">Edit</a></li>
                             </ul>
+                        {% else %}
+                            <a href="{% url 'pages:menu' %}">Menu</a>
                         {% endif %}
                     </li>
                     <li class="nav-single">
-                        {% if user.is_authenticated and user.is_superuser %}
-                            <a href="{% url 'pages:news' %}" class="init-bottom">News</a>
-                        {% else %}
-                            <a href="{% url 'pages:news' %}">News</a>
-                        {% endif %}
                         {% if user.is_superuser %}
+                            <a href="{% url 'pages:news' %}" class="init-bottom">News</a>
                             <ul class="nav-second">
                                 <li><a href="{% url 'pages:news-create' %}">Create</a></li>
                                 <li><a href="/admin/pages/news/" target="_blank">Edit</a></li>
                             </ul>
+                        {% else %}
+                            <a href="{% url 'pages:news' %}">News</a>
                         {% endif %}
                     </li>
+                    {% if user.is_superuser %}
+                        <!-- superuserの場合は後に別の～ページにリンクさせる -->
+                        <li><a href="{% url 'pages:booking' %}">Booking</a></li>
+                    {% else %}
+                        <li><a href="{% url 'pages:booking' %}">Booking</a></li>
+                    {% endif %}
                     <li><a href="{% url 'pages:contact' %}">Contact</a></li>
                     {% if request.user.is_authenticated %}
                         <li><a href="{% url 'accounts:account' %}">Accounts</a></li>

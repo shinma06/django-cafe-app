@@ -1,6 +1,6 @@
 from django.views import generic
 from .models import News, Menu
-from .forms import NewsForm, MenuForm, ContactForm
+from .forms import NewsForm, MenuForm, BookingForm, ContactForm
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import user_passes_test
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 from django.conf import settings
+import jpholiday
+import datetime
 
 def is_superuser(user):
     return user.is_superuser
@@ -137,6 +139,22 @@ class PostedNewsView(generic.TemplateView):
         if not self.request.META.get('HTTP_REFERER'):
             raise Http404("Page not found")
         return super().dispatch(*args, **kwargs)
+
+# ブッキング
+class BookingView(generic.CreateView):
+    template_name = 'pages/booking.html'
+    form_class = BookingForm
+    success_url = reverse_lazy('booking_confirmation.html')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        today = datetime.date.today()
+        three_months_later = (today + datetime.timedelta(days=90))
+        holidays_in_next_three_months = jpholiday.between(today, three_months_later)
+        context['holidays_list'] = [holiday[0].strftime('%Y, %m, %d') for holiday in holidays_in_next_three_months]
+
+        return context
 
 # コンタクト
 class ContactView(generic.View):

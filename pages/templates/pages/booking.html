@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+    <!--jQuery UI CSS-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css">
+{% endblock %}
+
+{% block title %}WCB Cafe - BOOKING{% endblock title %}
+
+{% block id %}accounts{% endblock id %}
+
+{% block page %}BOOKING{% endblock page %}
+
+{% block paragraph %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            {% csrf_token %}
+            {{ form.as_p }}
+        </div>
+        <input type="submit" class="button" value="予約内容確認に進む">
+    </form>
+
+    <script>
+        $(function() {
+            var disabledDates = [
+                {% for date in holidays_list %}
+                    new Date({{ date|date:"Y" }}, {{ date|date:"m" }} - 1, {{ date|date:"d" }}).getTime(),
+                {% endfor %}
+            ];
+
+            $('#datepicker').datepicker({
+                beforeShowDay: function(date) {
+                    if (disabledDates.includes(date.getTime())) {
+                        return [false, "ui-state-disabled", "祝日はお休みです"];
+                    } else {
+                        return [true, ""];
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock paragraph %}
