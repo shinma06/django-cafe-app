@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+import datetime
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class News(models.Model):
     CATEGORY = (
@@ -31,11 +33,16 @@ class Menu(models.Model):
         return self.title
     
 class Booking(models.Model):
-    HOURS_CHOICES = [(f"{h}:{m}", f"{h}:{m}") for h in range(9, 22) for m in ["00", "30"] if not (h == 21 and m == "30")]
+    HOURS_CHOICES = [
+    (datetime.time(hour=h, minute=m), f"{h:02}:{m:02}")
+    for h in range(9, 22)
+    for m in [0, 30]
+    if not ((h == 21 and m == 30) or (h == 9 and m == 0))
+    ]
 
     name = models.CharField("名前", max_length=30)
     date = models.DateField("日付")
-    time = models.CharField("時間", max_length=5, choices=HOURS_CHOICES)
+    time = models.TimeField("時間", choices=HOURS_CHOICES)
     phone_number = models.CharField("電話番号", max_length=15)
     number_of_people = models.PositiveIntegerField("人数", default=1)
 

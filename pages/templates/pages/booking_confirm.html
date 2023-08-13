@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}WCB Cafe - BOOKING CONFIRM{% endblock title %}
+
+{% block id %}accounts{% endblock id %}
+
+{% block page %}BOOKING CONFIRM{% endblock page %}
+
+{% block paragraph %}
+    <h2 style="padding-bottom: 50px;">予約内容に問題がないか確認してください。</h2>
+    <p>名前:<br><h3>{{ booking_data.name }}</h3></p>
+    <p>日付:<br><h3>{{ booking_data.date }}</h3></p>
+    <p>時間:<br><h3>{{ booking_data.time|slice:":5" }}</h3></p>
+    <p>電話番号:<br><h3>{{ booking_data.phone_number }}</h3></p>
+    <p>人数:<br><h3>{{ booking_data.number_of_people }}</h3></p>
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" class="button" value="予約する">
+    </form>
+    <p>予約内容を変更する場合は<a href="{% url 'pages:booking' %}">こちら</a></p>
+{% endblock paragraph %}

@@ -4,8 +4,8 @@ from django.contrib import admin
 
 # 作成したモデルを管理画面に反映するファイル
 
-from .models import News, Menu
+from .models import News, Menu, Booking
 
 admin.site.register(News)
-
 admin.site.register(Menu)
+admin.site.register(Booking)

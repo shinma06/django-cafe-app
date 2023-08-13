@@ -1,7 +1,6 @@
 from django import forms
 from .models import News, Menu, Booking
-import jpholiday
-import datetime
+from datetime import datetime
 
 class NewsForm(forms.ModelForm):
     class Meta:
@@ -27,14 +26,15 @@ class MenuForm(forms.ModelForm):
         fields = ['title', 'img', 'alt', 'price']
 
 class BookingForm(forms.ModelForm):
-    date = forms.DateField(
-    label="日付",
-    widget=forms.TextInput(attrs={'id': 'datepicker'})
-    )
+    date = forms.DateField(label="日付", input_formats=['%Y/%m/%d'], widget=forms.TextInput(attrs={'id': 'datepicker', 'readonly': 'readonly'}))
+    number_of_people = forms.IntegerField(label="人数", initial=1, widget=forms.NumberInput(attrs={'min': '1', 'max': '10'}))
 
     class Meta:
         model = Booking
         fields = ['name', 'date', 'time', 'phone_number', 'number_of_people']
+
+    def clean_date(self):
+        return self.cleaned_data['date']
 
 class ContactForm(forms.Form):
     subject = forms.CharField(label='件名', max_length=100)
