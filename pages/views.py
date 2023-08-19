@@ -24,6 +24,12 @@ class MenuView(generic.ListView):
     model = Menu 
     context_object_name = 'object_list'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category_display_names = dict(News.CATEGORYS)  # カテゴリーの値と表示名の辞書
+        context['category_display_names'] = category_display_names
+        return context
+
 # メニュー追加(superuserのみ使用可)
 @method_decorator(user_passes_test(is_superuser, login_url='pages:menu'), name='dispatch')
 class CreateMenuView(generic.CreateView):
@@ -146,26 +152,19 @@ class BookingView(generic.CreateView):
     template_name = 'pages/booking.html'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
         today = datetime.date.today()
         next_day = today + datetime.timedelta(days=1)
-        three_months_later = (today + datetime.timedelta(days=90))
-        holidays_in_next_three_months = jpholiday.between(today, three_months_later)
-        context['holidays_list'] = [holiday[0] for holiday in holidays_in_next_three_months]
+        three_months_later = today + datetime.timedelta(days=90)
+        holidays_list = [holiday[0] for holiday in jpholiday.between(today, three_months_later)]
+
+        context = super().get_context_data(**kwargs)
         context['next_day'] = next_day
         context['three_months_later'] = three_months_later
-
+        context['holidays_list'] = holidays_list
+        
         return context
     
     def form_valid(self, form):
-        booking_data = form.cleaned_data
-
-        date_value = booking_data.get('date')
-        booking_data['date'] = date_value.strftime('%Y-%m-%d')
-        time_value = booking_data.get('time')
-        booking_data['time'] = time_value.strftime('%H:%M:%S')
-
         self.request.session['booking_data'] = form.cleaned_data
         return redirect(reverse('pages:booking-confirm'))
     
@@ -174,10 +173,10 @@ class BookingConfirmView(generic.TemplateView):
     template_name = 'pages/booking_confirm.html'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
         # セッションからデータを取得
         booking_data = self.request.session.get('booking_data')
-
+        
+        context = super().get_context_data(**kwargs)
         context['booking_data'] = booking_data
         return context
     
@@ -185,8 +184,8 @@ class BookingConfirmView(generic.TemplateView):
         booking_data = request.session.get('booking_data')
         
         # dateとtimeを文字列からオブジェクトに変換
-        booking_data['date'] = datetime.datetime.strptime(booking_data['date'], '%Y-%m-%d').date()
-        booking_data['time'] = datetime.datetime.strptime(booking_data['time'], '%H:%M:%S').time()
+        booking_data['date'] = datetime.strptime(booking_data['date'], '%Y/%m/%d').date()
+        booking_data['time'] = datetime.strptime(booking_data['time'], '%H:%M').time()
 
         # データの保存
         Booking.objects.create(**booking_data)
@@ -194,6 +193,12 @@ class BookingConfirmView(generic.TemplateView):
         del request.session['booking_data']
 
         return redirect('pages:booking-complete')
+    
+    #リダイレクト以外の方法でのアクセスを禁止
+    def dispatch(self, *args, **kwargs):
+        if not self.request.META.get('HTTP_REFERER'):
+            raise Http404("Page not found")
+        return super().dispatch(*args, **kwargs)
 
 #ブッキング完了
 class BookingCompleteView(generic.TemplateView):

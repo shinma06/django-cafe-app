@@ -34,7 +34,7 @@
         $(function() {
             var startDate = new Date({{ next_day|date:"Y" }}, {{ next_day|date:"m" }} - 1, {{ next_day|date:"d" }}).getTime();              
             var endDate = new Date({{ three_months_later|date:"Y" }}, {{ three_months_later|date:"m" }} - 1, {{ three_months_later|date:"d" }}).getTime();
-            var disabledDates = [
+            var holidays = [
                 {% for date in holidays_list %}
                     new Date({{ date|date:"Y" }}, {{ date|date:"m" }} - 1, {{ date|date:"d" }}).getTime(),
                 {% endfor %}
@@ -44,7 +44,7 @@
                 dateFormat: "yy/mm/dd",
                 beforeShowDay: function(date) {
                     var currentTime = date.getTime();
-                    if (currentTime < startDate || currentTime > endDate || disabledDates.includes(currentTime)) {  // 範囲外、または祝日の場合
+                    if (currentTime < startDate || currentTime > endDate || holidays.includes(currentTime)) {  // 範囲外、または祝日の場合
                         return [false, "ui-state-disabled", "選択できない日付です"];
                     } else {
                         return [true, ""];

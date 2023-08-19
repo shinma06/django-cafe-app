@@ -1,16 +1,15 @@
 from django.db import models
 from django.utils import timezone
-import datetime
-from django.core.validators import MinValueValidator, MaxValueValidator
 
 class News(models.Model):
-    CATEGORY = (
+    CATEGORYS = [
+        ('', 'カテゴリーを選択'),
         ('promotion', 'お店の紹介'),
         ('irregularmenu', '期間限定メニュー'),
         ('event', 'イベント'),
         ('talk', 'お客様との会話'),
-    )
-    category = models.CharField(null=False, max_length=100, choices=CATEGORY, verbose_name='カテゴリー',)
+    ]
+    category = models.CharField(null=False, max_length=100, choices=CATEGORYS, verbose_name='カテゴリー',)
     title = models.CharField(null=False, max_length=100, verbose_name='タイトル',)
     text = models.TextField(null=False, verbose_name='本文',)
     img = models.ImageField(null=True, blank=True, verbose_name='画像',)
@@ -33,16 +32,9 @@ class Menu(models.Model):
         return self.title
     
 class Booking(models.Model):
-    HOURS_CHOICES = [
-    (datetime.time(hour=h, minute=m), f"{h:02}:{m:02}")
-    for h in range(9, 22)
-    for m in [0, 30]
-    if not ((h == 21 and m == 30) or (h == 9 and m == 0))
-    ]
-
     name = models.CharField("名前", max_length=30)
     date = models.DateField("日付")
-    time = models.TimeField("時間", choices=HOURS_CHOICES)
+    time = models.TimeField("時間")
     phone_number = models.CharField("電話番号", max_length=15)
     number_of_people = models.PositiveIntegerField("人数", default=1)
 
