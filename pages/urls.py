@@ -22,5 +22,5 @@ urlpatterns = [
     path('booking/complete/', views.BookingCompleteView.as_view(), name='booking-complete'),
     # お問い合わせ
     path('contact/', views.ContactView.as_view(), name='contact'),
-    path('contact_complete/', views.ContactCompleteView.as_view(), name='contact_complete'),
+    path('contact_complete/', views.ContactCompleteView.as_view(), name='contact-complete'),
 ]

@@ -9,7 +9,8 @@ from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy, reverse
 from django.conf import settings
 import jpholiday
-import datetime
+from datetime import datetime
+import datetime as dt
 
 def is_superuser(user):
     return user.is_superuser
@@ -152,9 +153,9 @@ class BookingView(generic.CreateView):
     template_name = 'pages/booking.html'
 
     def get_context_data(self, **kwargs):
-        today = datetime.date.today()
-        next_day = today + datetime.timedelta(days=1)
-        three_months_later = today + datetime.timedelta(days=90)
+        today = dt.date.today()
+        next_day = today + dt.timedelta(days=1)
+        three_months_later = today + dt.timedelta(days=90)
         holidays_list = [holiday[0] for holiday in jpholiday.between(today, three_months_later)]
 
         context = super().get_context_data(**kwargs)
@@ -182,6 +183,18 @@ class BookingConfirmView(generic.TemplateView):
     
     def post(self, request, *args, **kwargs):
         booking_data = request.session.get('booking_data')
+
+        # メールの送信
+        send_mail(
+            'WebCafeご予約内容確認メール',
+            f'ご予約者様: {booking_data["name"]}\n\n'
+            f'ご来店日: {booking_data["date"]}\n\n'
+            f'ご来店時間: {booking_data["time"]}\n\n'
+            f'ご来客人数: {booking_data["number_of_people"]}',
+            settings.EMAIL_HOST_USER,
+            [booking_data['email']],
+            fail_silently=False,
+        )
         
         # dateとtimeを文字列からオブジェクトに変換
         booking_data['date'] = datetime.strptime(booking_data['date'], '%Y/%m/%d').date()
@@ -189,6 +202,9 @@ class BookingConfirmView(generic.TemplateView):
 
         # データの保存
         Booking.objects.create(**booking_data)
+
+        
+
         # セッションからデータを削除
         del request.session['booking_data']
 
@@ -227,9 +243,9 @@ class ContactView(generic.View):
             # メールの送信
             send_mail(
                 f'件名: {subject}',
-                f'本文: {message}\n\nフルネーム: {full_name}\nEmailアドレス: {email}',
-                settings.EMAIL_HOST_USER,  # 送信元のメールアドレス
-                ['###'],  # 送信先のメールアドレス（リストで複数指定可能）
+                f'本文: {message}\n\nお客様のお名前: {full_name}\nお客様のEmailアドレス: {email}',
+                settings.EMAIL_HOST_USER,
+                [settings.EMAIL_HOST_USER],
                 fail_silently=False,
             )
 

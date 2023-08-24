@@ -1,14 +1,14 @@
-import re
 from django import forms
 from .models import News, Menu, Booking
 from datetime import datetime
+from django.core.exceptions import ValidationError
 
 class NewsForm(forms.ModelForm):
     category = forms.ChoiceField(label='カテゴリー', choices=News.CATEGORYS, required=True)
 
     class Meta:
         model = News
-        fields = '__all__'
+        fields = ['category', 'text', 'img', 'alt']
 
     def clean(self):
         cleaned_data = super().clean()
@@ -25,7 +25,7 @@ class NewsForm(forms.ModelForm):
 class MenuForm(forms.ModelForm):
     class Meta:
         model = Menu
-        fields = '__all__'
+        fields = ['title', 'img', 'alt', 'price']
 
 class BookingForm(forms.ModelForm):
     HOURS_CHOICES = [
@@ -39,21 +39,29 @@ class BookingForm(forms.ModelForm):
     time = forms.ChoiceField(label="時間", choices=[('', '-----')] + HOURS_CHOICES, required=True)
     number_of_people = forms.IntegerField(label="人数", initial=1, widget=forms.NumberInput(attrs={'min': '1', 'max': '10'}))
 
-    def clean_date_str(self):
-        date = self.cleaned_data['date_str']
-        try:
-            datetime.strptime(date, '%Y/%m/%d')
-        except ValueError:
-            raise forms.ValidationError('日付の形式が正しくありません。yyyy/mm/ddの形式で入力してください。')
+    def clean_date(self):
+        date_str = self.cleaned_data['date']
         
-        return date
+        # yyyy/mm/dd形式の日付を確認
+        try:
+            date_obj = datetime.strptime(date_str, '%Y/%m/%d').date()
+        except ValueError:
+            raise ValidationError("日付はyyyy/mm/dd形式で入力してください。")
+        
+        return date_obj  # 正しい datetime.date オブジェクトとして返す
+
+    # dateフィールドの値を yyyy/mm/dd 形式のstrとして返す
+    def _post_clean(self):
+        super()._post_clean()
+        if 'date' in self.cleaned_data:
+            self.cleaned_data['date'] = self.cleaned_data['date'].strftime('%Y/%m/%d')
 
     class Meta:
         model = Booking
-        fields = '__all__'
+        fields = ['name', 'date', 'time', 'email', 'phone_number', 'number_of_people']
 
 class ContactForm(forms.Form):
     subject = forms.CharField(label='件名', max_length=100) 
     message = forms.CharField(label='本文', widget=forms.Textarea)
-    full_name = forms.CharField(label='フルネーム', max_length=100)
-    email = forms.EmailField(label='Emailアドレス', max_length=100)
+    full_name = forms.CharField(label='フルネーム', max_length=40)
+    email = forms.EmailField(label='Emailアドレス', max_length=40)

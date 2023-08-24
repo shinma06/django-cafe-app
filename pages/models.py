@@ -27,16 +27,19 @@ class Menu(models.Model):
     img = models.ImageField(null=False, verbose_name='メニュー画像',)
     alt = models.CharField(null=False, max_length=50, verbose_name='画像タイトル',)
     price = models.IntegerField(null=False, verbose_name='値段(円)')
+    created_at = models.DateTimeField(default=timezone.now)
     
     def __str__(self):
         return self.title
     
 class Booking(models.Model):
-    name = models.CharField("名前", max_length=30)
-    date = models.DateField("日付")
-    time = models.TimeField("時間")
-    phone_number = models.CharField("電話番号", max_length=15)
-    number_of_people = models.PositiveIntegerField("人数", default=1)
+    name = models.CharField('名前', max_length=40)
+    date = models.DateField('日付')
+    time = models.TimeField('時間')
+    email = models.EmailField('Emailアドレス', max_length=40, null=True)
+    phone_number = models.CharField('電話番号', max_length=15)
+    number_of_people = models.PositiveIntegerField('人数', default=1)
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return f"{self.name} - {self.date} {self.time}"
+        return f'{self.name} - {self.date} {self.time}'
