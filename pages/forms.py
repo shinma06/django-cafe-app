@@ -8,7 +8,7 @@ class NewsForm(forms.ModelForm):
 
     class Meta:
         model = News
-        fields = ['category', 'text', 'img', 'alt']
+        fields = ['category', 'title', 'text', 'img', 'alt']
 
     def clean(self):
         cleaned_data = super().clean()

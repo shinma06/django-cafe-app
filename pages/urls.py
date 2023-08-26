@@ -20,6 +20,8 @@ urlpatterns = [
     path('booking/', views.BookingView.as_view(), name='booking'),
     path('booking/confirm/', views.BookingConfirmView.as_view(), name='booking-confirm'),
     path('booking/complete/', views.BookingCompleteView.as_view(), name='booking-complete'),
+    path('booking/list/', views.BookingListView.as_view(), name='booking-list'),
+    path('booking/list/<str:date>', views.BookingDateView.as_view(), name='booking-date'),
     # お問い合わせ
     path('contact/', views.ContactView.as_view(), name='contact'),
     path('contact_complete/', views.ContactCompleteView.as_view(), name='contact-complete'),

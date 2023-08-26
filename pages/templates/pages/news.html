@@ -13,17 +13,21 @@
         {% if category_name %}
             <h2>絞り込み：{{ category_name }}</h2>
         {% endif %}
-        {% for item in object_list %}
-            <header class="post-info">
-                <h2 class="post-title">{{ item.title }}</h2>
-                <p class="post-date">{{ item.created_at|date:"m" }}/{{ item.created_at|date:"d" }}<span>{{ item.created_at|date:"Y" }}</span></p>
-                <p class="post-cat">カテゴリー：{{ item.get_category_display }}</p>
-            </header>
-            {% if item.img %}
-                <img src="{{ item.img.url }}" alt="{{ item.alt }}">
-            {% endif %}
-            <p>{{ item.text }}</p>
-        {% endfor %}
+        {% if object_list %}
+            {% for item in object_list %}
+                <header class="post-info">
+                    <h2 class="post-title">{{ item.title }}</h2>
+                    <p class="post-date">{{ item.created_at|date:"m" }}/{{ item.created_at|date:"d" }}<span>{{ item.created_at|date:"Y" }}</span></p>
+                    <p class="post-cat">カテゴリー：{{ item.get_category_display }}</p>
+                </header>
+                {% if item.img %}
+                    <img src="{{ item.img.url }}" alt="{{ item.alt }}">
+                {% endif %}
+                <p>{{ item.text }}</p>
+            {% endfor %}
+        {% else %}
+            <p>ニュースはありません。</p>
+        {% endif %}
     </article>
 
     <!-- サイドバー -->
@@ -33,10 +37,10 @@
             {% if category_name %}
                 <li><a href="{% url 'pages:news' %}">すべてのニュース</a></li>
             {% endif %}
-            <li><a href="{% url 'pages:news-category' category='promotion' %}">お店の紹介</a></li>
-            <li><a href="{% url 'pages:news-category' category='irregularmenu' %}">期間限定メニュー</a></li>
-            <li><a href="{% url 'pages:news-category' category='event' %}">イベント</a></li>
-            <li><a href="{% url 'pages:news-category' category='talk' %}">お客様との会話</a></li>
+            <li><a href="{% url 'pages:news-category' category='promotion' %}">お店の紹介 {% if category_name == 'お店の紹介' %}<strong style="color: #0bd;">&lt;</strong>{% endif %}</a></li>
+            <li><a href="{% url 'pages:news-category' category='irregularmenu' %}">期間限定メニュー {% if category_name == '期間限定メニュー' %}<strong style="color: #0bd;">&lt;</strong>{% endif %}</a></li>
+            <li><a href="{% url 'pages:news-category' category='event' %}">イベント {% if category_name == 'イベント' %}<strong style="color: #0bd;">&lt;</strong>{% endif %}</a></li>
+            <li><a href="{% url 'pages:news-category' category='talk' %}">お客様との会話 {% if category_name == 'お客様との会話' %}<strong style="color: #0bd;">&lt;</strong>{% endif %}</a></li>
         </ul>
 
         <h3 class="sub-title">このお店について</h3>

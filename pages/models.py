@@ -41,5 +41,8 @@ class Booking(models.Model):
     number_of_people = models.PositiveIntegerField('人数', default=1)
     created_at = models.DateTimeField(default=timezone.now)
 
+    class Meta:
+        ordering = ['-created_at']
+
     def __str__(self):
         return f'{self.name} - {self.date} {self.time}'

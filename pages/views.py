@@ -9,11 +9,42 @@ from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy, reverse
 from django.conf import settings
 import jpholiday
-from datetime import datetime
+from datetime import datetime, timedelta
 import datetime as dt
+import calendar
 
 def is_superuser(user):
     return user.is_superuser
+
+# ページネーションロジック
+class PaginationMixin:
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        current_page = context['page_obj'].number
+        total_pages = context['page_obj'].paginator.num_pages
+
+        # アイテム数が10以下の場合はページネーションを表示しない
+        if total_pages == 1:
+            context['show_pagination'] = False
+            return context
+
+        context['show_pagination'] = True
+
+        if total_pages <= 5:
+            pages = range(1, total_pages + 1)
+        elif current_page <= 2:
+            pages = range(1, 6)
+        elif current_page >= total_pages - 1:
+            pages = range(total_pages - 4, total_pages + 1)
+        else:
+            pages = range(current_page - 2, current_page + 3)
+
+        context['pages'] = pages
+
+        return context
 
 # ホーム
 class IndexView(generic.TemplateView):
@@ -61,36 +92,6 @@ class PostedMenuView(generic.TemplateView):
             raise Http404("Page not found")
         return super().dispatch(*args, **kwargs)
 
-# ページネーションロジック
-class PaginationMixin:
-    paginate_by = 10
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        current_page = context['page_obj'].number
-        total_pages = context['page_obj'].paginator.num_pages
-
-        # アイテム数が10以下の場合はページネーションを表示しない
-        if total_pages == 1:
-            context['show_pagination'] = False
-            return context
-
-        context['show_pagination'] = True
-
-        if total_pages <= 5:
-            pages = range(1, total_pages + 1)
-        elif current_page <= 2:
-            pages = range(1, 6)
-        elif current_page >= total_pages - 1:
-            pages = range(total_pages - 4, total_pages + 1)
-        else:
-            pages = range(current_page - 2, current_page + 3)
-
-        context['pages'] = pages
-
-        return context
-
 # ニュース
 class NewsView(PaginationMixin, generic.ListView):
     template_name = 'pages/news.html'
@@ -105,10 +106,10 @@ class NewsCategoryView(PaginationMixin, generic.ListView):
 
     def get_queryset(self):
         category = self.kwargs['category']
-        valid_categories = [cat[0] for cat in News.CATEGORY]
+        valid_categories = [cat[0] for cat in News.CATEGORYS]
         if category not in valid_categories:
             raise Http404("Category does not exist")
-        self.category_name = dict(News.CATEGORY).get(category)
+        self.category_name = dict(News.CATEGORYS).get(category)
         return News.objects.filter(category=category)
 
     def get_context_data(self, **kwargs):
@@ -137,7 +138,7 @@ class PostedNewsView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         news_id = self.request.session.get('news_id')
-        context['posted_news'] = Menu.objects.get(id=news_id)
+        context['posted_news'] = News.objects.get(id=news_id)
         return context
     
     #リダイレクト以外の方法でのアクセスを禁止
@@ -203,8 +204,6 @@ class BookingConfirmView(generic.TemplateView):
         # データの保存
         Booking.objects.create(**booking_data)
 
-        
-
         # セッションからデータを削除
         del request.session['booking_data']
 
@@ -225,6 +224,52 @@ class BookingCompleteView(generic.TemplateView):
         if not self.request.META.get('HTTP_REFERER'):
             raise Http404("Page not found")
         return super().dispatch(*args, **kwargs)
+    
+# ブッキング一覧
+class BookingListView(PaginationMixin, generic.ListView):
+    template_name = 'pages/booking_list.html'
+    model = Booking
+    context_object_name = 'booking_list'
+
+# ブッキング絞り込み
+class BookingDateView(PaginationMixin, generic.ListView):
+    template_name = 'pages/booking_list.html'
+    model = Booking
+    context_object_name = 'booking_list'
+
+    def get_queryset(self):
+        today = datetime.today().date()
+        date = self.kwargs.get('date')
+
+        if date == 'today':
+            start_date = end_date = today
+        elif date == 'tomorrow':
+            start_date = end_date = today + timedelta(days=1)
+        elif date == 'this_week':
+            start_date = today
+            end_date = today + timedelta(days=(6-today.weekday()))
+        elif date == 'this_month':
+            start_date = today
+            end_date = datetime(today.year, today.month, calendar.monthrange(today.year, today.month)[1]).date()
+        elif date == 'next_month':
+            if today.month == 12:
+                start_date = datetime(today.year+1, 1, 1).date()
+                end_date = datetime(today.year+1, 1, calendar.monthrange(today.year+1, 1)[1]).date()
+            else:
+                start_date = datetime(today.year, today.month+1, 1).date()
+                end_date = datetime(today.year, today.month+1, calendar.monthrange(today.year, today.month+1)[1]).date()
+        elif date == 'past_booking':
+            end_date = today - timedelta(days=1)
+            start_date = None
+        else:
+            start_date = end_date = today
+
+        return Booking.objects.filter(date__range=(start_date, end_date))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['selected_period'] = self.kwargs.get('date')
+        return context
 
 # コンタクト
 class ContactView(generic.View):

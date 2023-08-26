@@ -46,7 +46,7 @@
                     </li>
                     {% if user.is_superuser %}
                         <!-- superuserの場合は後に別の～ページにリンクさせる -->
-                        <li><a href="{% url 'pages:booking' %}">Booking</a></li>
+                        <li><a href="{% url 'pages:booking-list' %}">Booking</a></li>
                     {% else %}
                         <li><a href="{% url 'pages:booking' %}">Booking</a></li>
                     {% endif %}
