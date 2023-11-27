@@ -4,7 +4,6 @@
 CafeAppは、架空のカフェのウェブアプリケーションです。DjangoとMySQLを使用し、Dockerを利用して環境を構築しました。このプロジェクトは、学習目的で作成しました。
 
 ## 機能説明
-
 CafeAppでは、従業員側とユーザー側の機能が分けられています。
 
 ### 従業員側の機能
@@ -33,15 +32,19 @@ CafeAppでは、従業員側とユーザー側の機能が分けられていま�
 - Docker (最新版を推奨)
 - Gmail API
 
-Pythonライブラリ requirements.txt を参照
+### Pythonライブラリは requirements.txt を参照
 
 ## インストール方法
+
 ```
+
 git clone https://github.com/shinma06/cafeapp
 cd cafeapp
 docker-compose build
 docker-compose up -d
+
 ```
+
 
 ## 使用方法
 アプリケーションは http://localhost:8000 でアクセス可能です。
@@ -49,19 +52,27 @@ docker-compose up -d
 ## 管理者アカウントの作成
 
 1. 稼働中のコンテナを確認
+
 まずは docker ps コマンドを使って、現在稼働中のコンテナの状態を確認します。
 
 `docker ps`
+
 出力例：
 
+```
+
 CONTAINER ID   IMAGE         COMMAND                   CREATED      STATUS          PORTS                               NAMES
-xxxxxxxxxxxx   cafeapp-web   "./combined_script.sh"    7 days ago   Up 50 minutes   0.0.0.0:8000->8000/tcp              cafeapp-web-1
-xxxxxxxxxxxx   mysql:8.1.0   "docker-entrypoint.s…"   7 days ago   Up 50 minutes   0.0.0.0:3306->3306/tcp, 33060/tcp   mysql
+xxxxxxxxxxxx   cafeapp-web   "./combined_script.sh"    x days ago   Up x minutes   0.0.0.0:8000->8000/tcp              cafeapp-web-1
+xxxxxxxxxxxx   mysql:8.1.0   "docker-entrypoint.s…"   x days ago   Up x minutes   0.0.0.0:3306->3306/tcp, 33060/tcp   mysql
+
+```
 
 2. Django のスーパーユーザーを作成
+
 CafeApp のコンテナ内で Django のスーパーユーザーを作成するために、以下のコマンドを実行します。ここで XXX は docker ps コマンドの出力で表示された cafeapp-web コンテナの CONTAINER ID の頭文字2～3文字に置き換えてください。
 
-`docker exec -it XXX bash`
+`docker exec -it xxx bash`
+
 次に、Django のスーパーユーザーを作成します。
 
 `python manage.py createsuperuser`
