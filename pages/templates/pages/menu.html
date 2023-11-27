@@ -22,7 +22,7 @@
         </a>
         <div class="menu">
             <a href="#"><h2>こだわりコーヒー</h2></a>
-            <h3>680円</h3>
+            <h3>￥680 (税込)</h3>
         </div>
     </div>
     {% for item in object_list %}
@@ -32,7 +32,7 @@
         </a>
         <div class="menu">
             <a href="#"><h2>{{ item.title }}</h2></a>
-            <h3>{{ item.price }}円</h3>
+            <h3>￥{{ item.price }} (税込)</h3>
         </div>
     </div>
     {% endfor %}

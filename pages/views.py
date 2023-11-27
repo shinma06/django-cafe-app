@@ -62,6 +62,9 @@ class MenuView(generic.ListView):
         context['category_display_names'] = category_display_names
         return context
 
+class DitailMenuView(generic.TemplateView):
+    template_name = 'pages/menu_detail.html'
+
 # メニュー追加(superuserのみ使用可)
 @method_decorator(user_passes_test(is_superuser, login_url='pages:menu'), name='dispatch')
 class CreateMenuView(generic.CreateView):

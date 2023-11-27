@@ -9,6 +9,7 @@ urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     # メニュー
     path('menu/', views.MenuView.as_view(), name='menu'),
+    path('menu/ditail/', views.DitailMenuView.as_view(), name='menu-ditail'),
     path('menu/create/', views.CreateMenuView.as_view(), name='menu-create'),
     path('menu/posted/', views.PostedMenuView.as_view(), name='menu-posted'),
     # ニュース

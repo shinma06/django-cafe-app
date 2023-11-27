@@ -1,6 +1,3 @@
-/* CSSの文字コード指定 */
-@charset "UTF-8";
-
 /* 共通部分 */
 
 html {
@@ -58,6 +55,7 @@ img {
     color: #fff;
     border-radius: 5px;
     padding: 18px 32px;
+    margin-bottom: 30px;
 }
 
 .botton:hover {
@@ -408,6 +406,12 @@ aside p {
 #contact, #accounts {
     background-image: url("/static/pages/images/contact-bg.jpg");
     min-height: 100vh;
+}
+
+/* メニュー詳細 */
+#menu-ditail {
+    background-image: url("/static/pages/images/white.jpg");
+    min-height: 80vh;
 }
 
 /* フォーム */
