@@ -76,7 +76,7 @@ SECRET_KEY = 'django-insecure-...'
 DEBUG = True
 DATABASES = {
     'default': {
-        'PASSWORD': '0103',  # ハードコード
+        'PASSWORD': '<password>',  # ハードコード
     }
 }
 ```
@@ -88,7 +88,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '...')
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True').lower() in ('true', '1', 'yes')
 DATABASES = {
     'default': {
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD', '0103'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD', '<password>'),
     }
 }
 ```

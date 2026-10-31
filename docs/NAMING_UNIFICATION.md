@@ -42,7 +42,7 @@ INSTALLED_APPS = [
 
 ROOT_URLCONF = 'cafeapp.urls'
 WSGI_APPLICATION = 'cafeapp.wsgi.application'
-DATABASE_URL = os.environ.get('DATABASE_URL', 'postgres://shinma:0103@postgres:5432/cafeapp')
+DATABASE_URL = os.environ.get('DATABASE_URL', 'postgres://shinma:<password>@postgres:5432/cafeapp')
 ```
 
 #### **cafeapp/asgi.py**
@@ -77,7 +77,7 @@ container_name: cafeapp-web
 POSTGRES_DB: cafeapp
 
 # DATABASE_URL
-DATABASE_URL: postgres://shinma:0103@postgres:5432/cafeapp
+DATABASE_URL: postgres://shinma:<password>@postgres:5432/cafeapp
 
 # ワーキングディレクトリ
 volumes:

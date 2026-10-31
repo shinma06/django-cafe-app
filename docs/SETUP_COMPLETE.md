@@ -127,7 +127,7 @@ colors: {
 
 ```yaml
 environment:
-  DATABASE_URL: postgres://shinma:0103@postgres:5432/cafeapp
+  DATABASE_URL: postgres://shinma:<password>@postgres:5432/cafeapp
   DJANGO_DEBUG: "True"
   DJANGO_SECRET_KEY: django-insecure-dev-key-change-in-production
 ```

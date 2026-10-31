@@ -70,3 +70,9 @@ coverage.xml
 # Backup
 *.bak
 *.backup
+
+# Secrets
+*.pem
+*.key
+secrets/
+!.env.example

@@ -70,10 +70,13 @@ WSGI_APPLICATION = 'cafeapp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASE_URLがある場合はそれを使用、なければデフォルト設定
+# DATABASE_URLは環境変数（.env）から読み込む
 import dj_database_url
 
-DATABASE_URL = os.environ.get('DATABASE_URL', 'postgres://shinma:0103@postgres:5432/cafeapp')
+DATABASE_URL = os.environ.get('DATABASE_URL')
+if not DATABASE_URL:
+    from django.core.exceptions import ImproperlyConfigured
+    raise ImproperlyConfigured('DATABASE_URL is not set. Copy .env.example to .env and fill it in.')
 DATABASES = {
     'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
 }

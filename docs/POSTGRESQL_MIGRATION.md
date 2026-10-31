@@ -66,14 +66,14 @@ psycopg2-binary>=2.9.9,<3.0.0
 # 変更前
 MYSQL_DATABASE=cafeapp
 MYSQL_USER=shinma
-MYSQL_PASSWORD=0103
-MYSQL_ROOT_PASSWORD=0103
+MYSQL_PASSWORD=<password>
+MYSQL_ROOT_PASSWORD=<password>
 MYSQL_PORT=3306
 
 # 変更後
 POSTGRES_DB=cafeapp
 POSTGRES_USER=shinma
-POSTGRES_PASSWORD=0103
+POSTGRES_PASSWORD=<password>
 POSTGRES_PORT=5432
 ```
 
@@ -228,7 +228,7 @@ PostgreSQL環境で使用する環境変数：
 # データベース設定
 POSTGRES_DB=cafeapp           # データベース名
 POSTGRES_USER=shinma          # ユーザー名
-POSTGRES_PASSWORD=0103        # パスワード
+POSTGRES_PASSWORD=<password>        # パスワード
 POSTGRES_PORT=5432            # ポート番号
 
 # Django設定（自動的に設定される）

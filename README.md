@@ -49,7 +49,16 @@ git clone https://github.com/shinma06/cafeapp
 cd cafeapp
 ```
 
-2. セットアップ（推奨）
+2. 環境変数ファイルを作成
+
+```bash
+cp .env.example .env
+# .env を開いて POSTGRES_PASSWORD などを設定
+```
+
+`.env` はGitに含まれません（`.gitignore` 済み）。パスワードやAPIキーはここに書いてください。
+
+3. セットアップ（推奨）
 
 ```bash
 make setup
@@ -62,7 +71,7 @@ make setup
 - コンテナの起動
 - データベースマイグレーション
 
-3. 手動セットアップ（オプション）
+4. 手動セットアップ（オプション）
 
 ```bash
 # Dockerコンテナのビルドと起動

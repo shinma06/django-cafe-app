@@ -54,7 +54,7 @@ make rebuild  # clean + setup を一度に実行
 **docker-compose.yml:**
 ```yaml
 healthcheck:
-  test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-0103}"]
+  test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}}"]
   interval: 5s      # チェック間隔（短くして早期検知）
   timeout: 3s       # タイムアウト
   retries: 10       # リトライ回数
@@ -155,10 +155,10 @@ make rebuild    # clean + setup を実行
 
 ```bash
 # バックアップ
-docker exec cafeapp-mysql mysqldump -u root -p0103 cafeapp > backup_$(date +%Y%m%d).sql
+docker exec cafeapp-mysql mysqldump -u root -p<password> cafeapp > backup_$(date +%Y%m%d).sql
 
 # リストア
-docker exec -i cafeapp-mysql mysql -u root -p0103 cafeapp < backup_YYYYMMDD.sql
+docker exec -i cafeapp-mysql mysql -u root -p<password> cafeapp < backup_YYYYMMDD.sql
 ```
 
 ## トラブルシューティングチェックリスト

@@ -54,7 +54,7 @@ clean:
 	@docker ps -a --filter "name=cafe-app" --format "{{.Names}}" | xargs -r docker rm -f 2>/dev/null || true
 	docker volume prune -f
 
-setup: clean tailwind build up
+setup: env clean tailwind build up
 	@echo "コンテナの起動を待っています..."
 	@sleep 8
 	@echo "データベースの準備を待っています..."
@@ -77,3 +77,7 @@ setup: clean tailwind build up
 	@echo ""
 	@echo "スーパーユーザー作成:"
 	@echo "   make createsuperuser"
+
+.PHONY: env
+env:
+	@if [ ! -f .env ]; then cp .env.example .env; echo ".env を作成しました。POSTGRES_PASSWORD などを編集してください"; fi

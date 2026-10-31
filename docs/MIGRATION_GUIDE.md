@@ -17,7 +17,7 @@ docker compose down
 
 # データベースのバックアップ（重要！）
 docker compose up -d mysql
-docker exec -it mysql mysqldump -u root -p0103 cafeapp > backup_$(date +%Y%m%d).sql
+docker exec -it mysql mysqldump -u root -p<password> cafeapp > backup_$(date +%Y%m%d).sql
 docker compose down
 ```
 
@@ -63,7 +63,7 @@ make migrate
 docker cp backup_YYYYMMDD.sql mysql:/tmp/
 
 # データベースに復元
-docker exec -it mysql mysql -u root -p0103 cafeapp < /tmp/backup_YYYYMMDD.sql
+docker exec -it mysql mysql -u root -p<password> cafeapp < /tmp/backup_YYYYMMDD.sql
 ```
 
 ### 6. 静的ファイルの収集
@@ -182,7 +182,7 @@ docker compose up -d
 
 # バックアップからデータを復元
 docker cp backup_YYYYMMDD.sql mysql:/tmp/
-docker exec -it mysql mysql -u root -p0103 cafeapp < /tmp/backup_YYYYMMDD.sql
+docker exec -it mysql mysql -u root -p<password> cafeapp < /tmp/backup_YYYYMMDD.sql
 ```
 
 ## サポート
